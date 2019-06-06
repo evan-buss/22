@@ -30,11 +30,16 @@ namespace App.Views {
             Object (
                 margin_end: 10,
                 margin_start: 10,
-                selection_mode: Gtk.SelectionMode.NONE,
+                selection_mode: Gtk.SelectionMode.MULTIPLE,
                 activate_on_single_click: false,
-                homogeneous: false
+                homogeneous: true,
+                valign: Gtk.Align.START,
+                row_spacing: 10,
+                column_spacing: 10
+                //  halign: Gtk.Align.START
             );
 
+            //  Load library on application start
             var library_manager = LibraryManager.get_instance ();
             library_manager.get_library.begin(Environment.get_home_dir () + "/Downloads/Books", (obj, res) => {
                 var book_list = library_manager.get_library.end(res);
@@ -47,10 +52,13 @@ namespace App.Views {
 
         construct {}
 
+        /*
+            Create an image and add it to the flowbox from it's file path.
+         */
         private void add_image_from_path (string path) {
             var image = new Granite.AsyncImage ();
             var file = File.new_for_path (path);
-            image.set_from_file_async(file, 200, 200, true);
+            image.set_from_file_async (file, 200, 200, true);
             this.add (image);
         }
     }

@@ -55,18 +55,17 @@ namespace App {
             /************************
                 Header Bar
             ************************/
-            var headerbar = new Gtk.HeaderBar ();
-            headerbar.get_style_context ().add_class ("default-decoration");
-            headerbar.show_close_button = true;
+            var headerbar = new Widgets.HeaderBar ();
             set_titlebar (headerbar);
-            title = _("22");
 
             /************************
               Create Views
             ************************/
             stack = new Gtk.Stack ();
+            var scroll_window = new Gtk.ScrolledWindow (null, null);
             library_view = new Views.LibraryView ();
-            stack.add_named (library_view, "main");
+            scroll_window.add (library_view);
+            stack.add_named (scroll_window, "main");
 
             add (stack);
         }
