@@ -1,4 +1,7 @@
 # Add all source files here
 sources = files (
-  'Application.vala'
+  'Application.vala',
+  'Views/LibraryView.vala',
+  'Services/LibraryManager.vala',
+  'MainWindow.vala'
 )
