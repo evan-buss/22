@@ -20,19 +20,6 @@
 * Authored by: Evan Buss <evan.buss28@gmail.com>
 */
 
-/* Application headerbar includes buttons to toggle view and maybe a search */
-
-namespace App.Widgets {
-    class HeaderBar : Gtk.HeaderBar {
-        public HeaderBar() {
-            Object (
-                show_close_button: true,
-                title: "22"
-            );
-        }
-
-        construct {
-            get_style_context ().add_class ("default-decoration");
-        }
-    }
-}
+/*
+    This view prompts the user to set up the necessary settings on first app load.
+*/

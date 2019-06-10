@@ -29,8 +29,8 @@ namespace App {
 
         public MainWindow (Application app) {
             Object (
-                default_width: 640,
-                default_height: 480,
+                default_width: 800,
+                default_height: 600,
                 application: app
             );
         }
@@ -61,13 +61,15 @@ namespace App {
             /************************
               Create Views
             ************************/
-            stack = new Gtk.Stack ();
             var scroll_window = new Gtk.ScrolledWindow (null, null);
-            library_view = new Views.LibraryView ();
-            scroll_window.add (library_view);
-            stack.add_named (scroll_window, "main");
 
-            add (stack);
+            stack = new Gtk.Stack ();
+            scroll_window.add (stack);
+
+            library_view = new Views.LibraryView ();
+            stack.add_named (library_view, "library");
+
+            add (scroll_window);
         }
     }
 }

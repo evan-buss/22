@@ -1,1 +1,8 @@
 ☐ Maybe need to find another name as application_id can't be a number?
+
+Design:
+    ☐ Headerbar should have a button that toggles between different views
+        ☐ Library View
+        ☐ Device management view
+    ☐ Library should be searchable
+    ☐ Non-icon view that groups books by author

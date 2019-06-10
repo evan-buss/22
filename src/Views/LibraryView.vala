@@ -28,15 +28,15 @@ namespace App.Views {
 
         public LibraryView () {
             Object (
-                margin_end: 10,
-                margin_start: 10,
+                //  margin_end: 10,
+                //  margin_start: 10,
+                margin: 10,
                 selection_mode: Gtk.SelectionMode.MULTIPLE,
                 activate_on_single_click: false,
                 homogeneous: true,
                 valign: Gtk.Align.START,
                 row_spacing: 10,
                 column_spacing: 10
-                //  halign: Gtk.Align.START
             );
 
             //  Load library on application start

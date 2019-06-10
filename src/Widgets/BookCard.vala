@@ -20,19 +20,17 @@
 * Authored by: Evan Buss <evan.buss28@gmail.com>
 */
 
-/* Application headerbar includes buttons to toggle view and maybe a search */
-
+/*
+    Represents a single book including:
+        image
+        popover menu
+        actions
+        format overlay
+*/
 namespace App.Widgets {
-    class HeaderBar : Gtk.HeaderBar {
-        public HeaderBar() {
-            Object (
-                show_close_button: true,
-                title: "22"
-            );
-        }
+    class BookCard : Gtk.Box {
+        public BookCard() {
 
-        construct {
-            get_style_context ().add_class ("default-decoration");
         }
     }
 }
