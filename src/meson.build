@@ -8,6 +8,7 @@ sources = files (
   'Views/LibraryView.vala',
 
   'Widgets/HeaderBar.vala',
+  'Widgets/BookCard.vala',
 
   'Services/LibraryManager.vala',
   'Services/Settings.vala'

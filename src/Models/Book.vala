@@ -34,18 +34,14 @@ namespace App.Models {
     public class Book {
 
         public string folder_path { get; set; }
-        public string image_path { get; set; }
-        public string epub_path { get; set; }
-        public string mobi_path { get; set; }
-        public string metadata_path { get; set; }
-        public string unsupported { get; set; }
+        public string? image_path { get; set; }
+        public string? epub_path { get; set; }
+        public string? mobi_path { get; set; }
+        public string? metadata_path { get; set; }
+        public string? unsupported { get; set; }
 
-        public Book () {
-            folder_path = "Not Found";
-            image_path = "Not Found";
-            epub_path = "Not Found";
-            mobi_path = "Not Found";
-            metadata_path = "Not Found";
+        public Book (string folder_path) {
+            this.folder_path = folder_path;
         }
 
         public string to_string () {

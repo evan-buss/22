@@ -22,6 +22,7 @@ subdir('src')
 dependencies = [
     dependency('gtk+-3.0'),
     dependency('granite'),
+    dependency('libxml-2.0'),
 ]
 
 # Main application executable

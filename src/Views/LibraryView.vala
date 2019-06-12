@@ -45,9 +45,27 @@ namespace App.Views {
             library_manager = LibraryManager.get_instance ();
             settings = Services.Settings.get_default ();
             load_library ();
-        }
 
-        construct {}
+            //  this.child_activated.connect((child)=>{
+            //      var card = (Widgets.BookCard) child.get_child();
+            //      card.revealer.set_reveal_child (!card.revealer.get_reveal_child ());
+            //  });
+
+            // Retrieve selected children
+            this.selected_children_changed.connect (() => {
+                get_selected ();
+            });
+
+            //  key_press_event.connect ((e) => {
+            //      if ((e.state & Gdk.ModifierType.CONTROL_MASK) != 0) {
+            //          if (e.keyval == Gdk.Key.d) {
+            //              create_a_document_from_a_string ();
+            //              return true;
+            //          }
+            //      }
+            //     return false;
+            //  });
+        }
 
         /*
             Create an image and add it to the flowbox from it's file path.
@@ -72,9 +90,24 @@ namespace App.Views {
                 var book_list = library_manager.get_library.end(res);
                 message ("There were " + book_list.length.to_string () + " books");
                 foreach (var book in book_list) {
-                    add_image_from_path (book);
+                    this.add (new Widgets.BookCard (book));
                 }
                 this.show_all();
+            });
+        }
+
+        /*
+         * Retrieve all selected widgets from the flowbox
+         */
+        private void get_selected () {
+            this.@foreach ((widget) => {
+                var flow = (Gtk.FlowBoxChild) widget;
+                var book_card = (Widgets.BookCard) flow.get_child ();
+                if (flow.is_selected ()) {
+                    book_card.revealer.set_reveal_child (true);
+                } else {
+                    book_card.revealer.set_reveal_child (false);
+                }
             });
         }
     }

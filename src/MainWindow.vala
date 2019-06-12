@@ -45,13 +45,13 @@ namespace App {
             /************************
               Load External CSS
             ************************/
-            //  var css_provider = new Gtk.CssProvider ();
-            //  css_provider.load_from_resource ("/com/github/evan-buss/yin-yang/css/style.css");
-            //  Gtk.StyleContext.add_provider_for_screen (
-            //      Gdk.Screen.get_default (),
-            //      css_provider,
-            //      Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-            //  );
+            var css_provider = new Gtk.CssProvider ();
+            css_provider.load_from_resource ("/com/github/evan-buss/22/css/style.css");
+            Gtk.StyleContext.add_provider_for_screen (
+                Gdk.Screen.get_default (),
+                css_provider,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            );
 
             /************************
                 Header Bar

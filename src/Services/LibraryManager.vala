@@ -123,8 +123,7 @@ namespace App.Services {
          * @return new Book
          */
         private async Models.Book get_book_data (string path) {
-                var book = new Models.Book ();
-                book.folder_path = path;
+                var book = new Models.Book (path);
 
                 var file = File.new_for_path (path);
 
@@ -151,7 +150,6 @@ namespace App.Services {
                         print ("Error: %s\n", e.message);
                     }
                 });
-
                 return book;
         }
     }

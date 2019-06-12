@@ -29,7 +29,56 @@
 */
 namespace App.Widgets {
     class BookCard : Gtk.Box {
-        public BookCard() {
+
+        public Models.Book book;
+        public Granite.AsyncImage book_cover_image;
+        public Gtk.Revealer revealer;
+
+        public BookCard(Models.Book book) {
+            Object (
+                orientation: Gtk.Orientation.VERTICAL,
+                spacing: 8
+            );
+
+            this.book = book;
+
+            /************************
+              Create Image
+            ************************/
+            book_cover_image = new Granite.AsyncImage ();
+            var image_file = File.new_for_path (this.book.image_path);
+            book_cover_image.set_from_file_async (image_file, 200, 200, true);
+
+            /************************
+              Book Formats Overlay
+            ************************/
+            var overlay = new Gtk.Overlay ();
+
+            var book_formats_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+            book_formats_box.halign = Gtk.Align.END;
+            book_formats_box.valign = Gtk.Align.END;
+
+            revealer = new Gtk.Revealer ();
+            revealer.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
+
+            var mobi_label = new Gtk.Label ("mobi");
+            mobi_label.get_style_context ().add_class ("chip");
+            mobi_label.get_style_context ().add_class ("chip__blue");
+
+            var epub_label = new Gtk.Label ("epub");
+            epub_label.get_style_context ().add_class ("chip");
+            epub_label.get_style_context ().add_class ("chip__blue");
+
+            //  Only show chips for book formats in library
+            if (book.epub_path != null) book_formats_box.add (epub_label);
+            if (book.mobi_path != null) book_formats_box.add (mobi_label);
+
+            revealer.add (book_formats_box);
+
+            overlay.add_overlay (revealer);
+            overlay.add (book_cover_image);
+
+            add (overlay);
 
         }
     }
