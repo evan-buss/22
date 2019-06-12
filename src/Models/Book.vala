@@ -32,7 +32,8 @@
 
 namespace App.Models {
     public class Book {
-
+        public string title { get; set; }
+        public string author { get; set; }
         public string folder_path { get; set; }
         public string? image_path { get; set; }
         public string? epub_path { get; set; }

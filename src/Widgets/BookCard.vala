@@ -78,8 +78,24 @@ namespace App.Widgets {
             overlay.add_overlay (revealer);
             overlay.add (book_cover_image);
 
-            add (overlay);
+            /************************
+              Book Details
+            ************************/
+            var title_label = new Gtk.Label (book.title);
+            title_label.tooltip_text = book.title;
+            title_label.halign = Gtk.Align.CENTER;
+            title_label.max_width_chars = 15;
+            title_label.ellipsize = Pango.EllipsizeMode.END;
 
+            var author_label = new Gtk.Label (book.author);
+            author_label.tooltip_text = book.author;
+            author_label.halign = Gtk.Align.CENTER;
+            author_label.max_width_chars = 15;
+            author_label.ellipsize = Pango.EllipsizeMode.END;
+
+            add (overlay);
+            add (title_label);
+            add (author_label);
         }
     }
 }

@@ -30,15 +30,14 @@ namespace App.Views {
 
         public LibraryView () {
             Object (
-                //  margin_end: 10,
-                //  margin_start: 10,
                 margin: 10,
                 selection_mode: Gtk.SelectionMode.MULTIPLE,
                 activate_on_single_click: false,
                 homogeneous: true,
                 valign: Gtk.Align.START,
                 row_spacing: 10,
-                column_spacing: 10
+                column_spacing: 10,
+                orientation: Gtk.Orientation.HORIZONTAL
             );
 
             //  Load library on application start
@@ -67,16 +66,6 @@ namespace App.Views {
             //  });
         }
 
-        /*
-            Create an image and add it to the flowbox from it's file path.
-         */
-        private void add_image_from_path (Models.Book book) {
-            var image = new Granite.AsyncImage ();
-            var file = File.new_for_path (book.image_path);
-            message (book.image_path);
-            image.set_from_file_async (file, 200, 200, true);
-            this.add (image);
-        }
 
         //  Load library from the current gsettings saved path
         public void load_library () {

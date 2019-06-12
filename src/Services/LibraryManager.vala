@@ -138,6 +138,7 @@ namespace App.Services {
                                 book.image_path = item_path;
                             } else if (name.contains (".opf")) {
                                 book.metadata_path = item_path;
+                                Utils.MetadataParser.parse_xml_file (ref book);
                             } else if (name.contains (".epub")) {
                                 book.epub_path = item_path;
                             } else if (name.contains (".mobi")) {

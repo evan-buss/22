@@ -10,6 +10,8 @@ sources = files (
   'Widgets/HeaderBar.vala',
   'Widgets/BookCard.vala',
 
+  'Utils/MetadataParser.vala',
+
   'Services/LibraryManager.vala',
   'Services/Settings.vala'
 )
