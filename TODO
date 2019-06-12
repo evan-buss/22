@@ -3,6 +3,27 @@
 Design:
     ☐ Headerbar should have a button that toggles between different views
         ☐ Library View
+            ☐ Grid View
+            ☐ List View
+            ☐ Sort / Order Library
+            ☐ Search Library
+            ☐ (maybe) bulk actions w/ multiselect
         ☐ Device management view
     ☐ Library should be searchable
     ☐ Non-icon view that groups books by author
+
+Next Steps:
+    ☐ Book card component
+        ☐ Show current versions in the library
+        ☐ Right click to show popover
+            ☐ Delete Book
+            ☐ Convert Book
+            ☐ Edit Book Metadata
+    ☐ Add books to library
+        ☐ Robust metadata.opf parser
+        ☐ Internet image scraper
+        ☐ (maybe) Internet metadata parser
+    ☐ First login landing page
+        ☐ Prompt to download conversion binary (Amazon)
+        ☐ Prompt to choose a library location (folder)
+        ☐ Loading indicator on first parse

@@ -20,19 +20,9 @@
 * Authored by: Evan Buss <evan.buss28@gmail.com>
 */
 
-namespace App.Services {
+namespace App.Controllers {
 
-    class Settings : Granite.Services.Settings {
+    class AppController {
 
-        private static GLib.Once<Settings> instance;
-        public static unowned Settings get_default () {
-            return instance.once (() => { return new Settings (); });
-        }
-
-        public string library_path { get; set; }
-
-        public Settings () {
-            base ("com.github.evan-buss.22");
-        }
     }
 }

@@ -31,7 +31,8 @@ namespace App {
             Object (
                 default_width: 800,
                 default_height: 600,
-                application: app
+                application: app,
+                icon_name: "com.github.evan-buss.22"
             );
         }
 
@@ -56,6 +57,11 @@ namespace App {
                 Header Bar
             ************************/
             var headerbar = new Widgets.HeaderBar ();
+
+            headerbar.library_changed.connect (() => {
+                library_view.load_library ();
+            });
+
             set_titlebar (headerbar);
 
             /************************

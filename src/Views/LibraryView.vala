@@ -25,6 +25,8 @@ using App.Services;
 namespace App.Views {
 
     public class LibraryView : Gtk.FlowBox {
+        private LibraryManager library_manager;
+        private Services.Settings settings;
 
         public LibraryView () {
             Object (
@@ -40,14 +42,9 @@ namespace App.Views {
             );
 
             //  Load library on application start
-            var library_manager = LibraryManager.get_instance ();
-            library_manager.get_library.begin(Environment.get_home_dir () + "/Downloads/Books", (obj, res) => {
-                var book_list = library_manager.get_library.end(res);
-                foreach (var book in book_list) {
-                    add_image_from_path (book);
-                }
-                this.show_all();
-            });
+            library_manager = LibraryManager.get_instance ();
+            settings = Services.Settings.get_default ();
+            load_library ();
         }
 
         construct {}
@@ -55,11 +52,30 @@ namespace App.Views {
         /*
             Create an image and add it to the flowbox from it's file path.
          */
-        private void add_image_from_path (string path) {
+        private void add_image_from_path (Models.Book book) {
             var image = new Granite.AsyncImage ();
-            var file = File.new_for_path (path);
+            var file = File.new_for_path (book.image_path);
+            message (book.image_path);
             image.set_from_file_async (file, 200, 200, true);
             this.add (image);
+        }
+
+        //  Load library from the current gsettings saved path
+        public void load_library () {
+            string uri = settings.library_path;
+
+            if (uri == "") {
+                return;
+            }
+
+            library_manager.get_library.begin(uri, (obj, res) => {
+                var book_list = library_manager.get_library.end(res);
+                message ("There were " + book_list.length.to_string () + " books");
+                foreach (var book in book_list) {
+                    add_image_from_path (book);
+                }
+                this.show_all();
+            });
         }
     }
 }

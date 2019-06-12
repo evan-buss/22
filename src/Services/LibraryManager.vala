@@ -25,11 +25,16 @@ namespace App.Services {
     public class LibraryManager {
 
         private static LibraryManager instance = null;
-        private string[] library;
+        private Models.Book[] library;
 
         public LibraryManager() {
         }
 
+        /*
+         * Get the current instance of the library object (singleton)
+         *
+         * @return instantiated LibraryManager
+         */
         public static LibraryManager get_instance () {
             if (instance == null) {
                 instance = new LibraryManager ();
@@ -37,47 +42,117 @@ namespace App.Services {
             return instance;
         }
 
-        public async string[] get_library (string path) {
-            yield load_library(path);
+        /*
+         * Reset the library (array of books)
+         */
+        public void reset_library () {
+            library = null;
+        }
+
+
+        /*
+         * Reload the library and return it
+         *
+         * @return Array of Model.Book objects
+         */
+        public async Models.Book[] get_library (string uri) {
+            yield load_library(uri);
             message ("library is " +  library.length.to_string ());
             return library;
         }
 
-        /* Load all files found at specific path */
-        private async void load_library (string path) {
-            var dir = File.new_for_path (path);
+        /*
+         * Aysnchronously load all book objects contained within a given path
+         * Books are saved to the "library" class property
+         * Books are parsed at the lowest depth (no subdirectories)
+         *
+         * @future: save parsed books to a database
+         *
+         * @param string uri - URI of starting folder (may change to path)
+        */
+        //  FIXME: Change to path
+        private async void load_library (string uri) {
+            var dir = File.new_for_uri (uri);
 
             try {
+
+                //  Get an enumerator of all files in the directory
                 var e = yield dir.enumerate_children_async(
                     FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT, null);
 
+
                 while (true) {
+                    //  Get an array of FileInfo for 10 files at a time
                     var files = yield e.next_files_async (
                         10, Priority.DEFAULT, null);
 
+                    //  Loop until all files have been parsed
                     if (files == null) {
                         break;
                     }
 
+                    var found_folder = false;
+                    string path = dir.get_path ();
+
                     foreach (var info in files) {
+                        path = dir.resolve_relative_path (info.get_name ()).get_path ();
+
+                        //  If file is directory, recursively run again
                         if (info.get_file_type () == FileType.DIRECTORY) {
-                            var subdir_path = dir.resolve_relative_path (info.get_name ()).get_path ();
-                            //  Recursively traverse subdirectories
+                            found_folder = true;
+                            var subdir_path = dir.resolve_relative_path (info.get_name ()).get_uri ();
                             yield load_library(subdir_path);
-                            //  yield load_library.begin(subdir_path, (obj, res) => {
-                            //      load_library.end (res);
-                            //  });
-                        } else {
-                            var name = info.get_name ();
-                            if (name.contains (".jpg") || name.contains (".png")) {
-                                library += dir.resolve_relative_path (name).get_path ();;
-                            }
                         }
+                    }
+
+                    //  If there wasn't a single folder found, we are at the lowest subdirectory
+                    if (!found_folder) {
+                        var folder_path = File.new_for_path (path).get_parent ().get_path ();
+                        library += yield get_book_data (folder_path);
                     }
                 }
             } catch(Error err) {
                 warning ("Error: %s\n", err.message);
             }
+        }
+
+
+        /*
+         * Create and return a new book object from a given book's folder path
+         *
+         * @return new Book
+         */
+        private async Models.Book get_book_data (string path) {
+                var book = new Models.Book ();
+                book.folder_path = path;
+
+                var file = File.new_for_path (path);
+
+                file.enumerate_children_async.begin (FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT, null, (obj, res) => {
+                    try {
+                        FileEnumerator enumerator = file.enumerate_children_async.end (res);
+                        FileInfo info;
+                        while ((info = enumerator.next_file (null)) != null) {
+                            var name = info.get_name ();
+                            var item_path = file.resolve_relative_path (name).get_path ();
+                            if (name.contains (".jpg") || name.contains (".png") || name.contains (".jpeg")) {
+                                book.image_path = item_path;
+                            } else if (name.contains (".opf")) {
+                                book.metadata_path = item_path;
+                            } else if (name.contains (".epub")) {
+                                book.epub_path = item_path;
+                            } else if (name.contains (".mobi")) {
+                                book.mobi_path = item_path;
+                            } else {
+                                book.unsupported = item_path;
+                            }
+                        }
+                    } catch (Error e) {
+                        print ("Error: %s\n", e.message);
+                    }
+                });
+
+                return book;
         }
     }
 }
