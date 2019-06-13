@@ -9,6 +9,7 @@ sources = files (
 
   'Widgets/HeaderBar.vala',
   'Widgets/BookCard.vala',
+  'Widgets/MetadataEditor.vala',
 
   'Utils/MetadataParser.vala',
 

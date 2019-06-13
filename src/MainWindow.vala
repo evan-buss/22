@@ -57,60 +57,59 @@ namespace App {
                 Header Bar
             ************************/
             var headerbar = new Widgets.HeaderBar ();
+            set_titlebar (headerbar);
 
             headerbar.library_changed.connect (() => {
                 library_view.load_library ();
             });
 
-            set_titlebar (headerbar);
-
             /************************
               Metadata Editor
             ************************/
-            //  connect to some event...
-            var metadata_revealer = new Gtk.Revealer ();
-            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 8);
-            metadata_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
-            var but = new Gtk.Button.with_label ("Save Changes");
-            var meta_title = new Gtk.Label ("");
-            box.add (meta_title);
-            box.add (but);
-            metadata_revealer.add (box);
 
+            var top_revealer = new Gtk.Revealer ();
+            top_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
+
+            var metadata_editor = new Widgets.MetadataEditor ();
+
+            top_revealer.add (metadata_editor);
 
             /************************
               Create Views
             ************************/
-            var view_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 8);
             var scroll_window = new Gtk.ScrolledWindow (null, null);
-
+            var views_container = new Gtk.Box(Gtk.Orientation.VERTICAL, 8);
+            library_view = new Views.LibraryView ();
             stack = new Gtk.Stack ();
 
-
-            library_view = new Views.LibraryView ();
             stack.add_named (library_view, "library");
 
-            view_box.add (metadata_revealer);
-            view_box.add (stack);
+            views_container.add (top_revealer);
+            views_container.add (stack);
 
-            scroll_window.add (view_box);
+            scroll_window.add (views_container);
+
+            /************************
+              Event Handling
+            ************************/
 
             double orig_value;
 
+            //  Activating a book card shows the metadata editor
             library_view.show_details.connect ((book) => {
-                meta_title.label = book.title;
-                //  Save original scroll position
+                metadata_editor.change_book (book);
+                //  Save original scroll position and scroll to top
                 orig_value = scroll_window.vadjustment.value;
-                //  Scroll to the top of the page
                 scroll_window.vadjustment.value = scroll_window.vadjustment.lower;
-                metadata_revealer.reveal_child = true;
+                top_revealer.reveal_child = true;
             });
 
-            but.clicked.connect (() => {
+
+            //  Scroll back to orig position when done
+            metadata_editor.done_edit.connect (() => {
                 scroll_window.vadjustment.value = orig_value;
-                metadata_revealer.reveal_child = false;
+                top_revealer.reveal_child = false;
             });
-
 
             add (scroll_window);
         }

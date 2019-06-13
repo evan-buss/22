@@ -67,11 +67,11 @@ namespace App.Utils {
             }
         }
 
-        private static void parse_properties (Xml.Node* node) {
-            // Loop over the passed node's properties (attributes)
-            for (Xml.Attr* prop = node->properties; prop != null; prop = prop->next) {
-                message (prop->name + " -> " + prop->children->content);
-            }
-        }
+        //  private static void parse_properties (Xml.Node* node) {
+        //      // Loop over the passed node's properties (attributes)
+        //      for (Xml.Attr* prop = node->properties; prop != null; prop = prop->next) {
+        //          message (prop->name + " -> " + prop->children->content);
+        //      }
+        //  }
     }
 }

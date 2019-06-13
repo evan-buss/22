@@ -25,6 +25,7 @@ using App.Services;
 namespace App.Views {
 
     public class LibraryView : Gtk.FlowBox {
+
         private LibraryManager library_manager;
         private Services.Settings settings;
         public signal void show_details (Models.Book book);
@@ -50,13 +51,6 @@ namespace App.Views {
                 //  message ("showing revealer??");
                 var card = (Widgets.BookCard) child.get_child();
                 show_details(card.book);
-                //  card.settings_revealer.reveal_child = !card.settings_revealer.reveal_child;
-                //  if (card.orientation == Gtk.Orientation.HORIZONTAL) {
-                //      card.orientation = Gtk.Orientation.VERTICAL;
-                //  } else {
-                //      card.orientation = Gtk.Orientation.HORIZONTAL;
-                //  }
-
             });
 
             // Retrieve selected children

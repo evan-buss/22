@@ -7,3 +7,10 @@
 .chip__blue {
     background-color: #0080ff;
 }
+
+.metadata_editor {
+    box-shadow:
+        inset 0px 11px 8px -10px #000000,
+        inset 0px -11px 8px -10px #000000;
+    background-color: #303030;
+}
