@@ -27,13 +27,14 @@ namespace App.Views {
     public class LibraryView : Gtk.FlowBox {
         private LibraryManager library_manager;
         private Services.Settings settings;
+        public signal void show_details (Models.Book book);
 
         public LibraryView () {
             Object (
                 margin: 10,
                 selection_mode: Gtk.SelectionMode.MULTIPLE,
                 activate_on_single_click: false,
-                homogeneous: true,
+                homogeneous: false,
                 valign: Gtk.Align.START,
                 row_spacing: 10,
                 column_spacing: 10,
@@ -45,10 +46,18 @@ namespace App.Views {
             settings = Services.Settings.get_default ();
             load_library ();
 
-            //  this.child_activated.connect((child)=>{
-            //      var card = (Widgets.BookCard) child.get_child();
-            //      card.revealer.set_reveal_child (!card.revealer.get_reveal_child ());
-            //  });
+            this.child_activated.connect((child)=>{
+                //  message ("showing revealer??");
+                var card = (Widgets.BookCard) child.get_child();
+                show_details(card.book);
+                //  card.settings_revealer.reveal_child = !card.settings_revealer.reveal_child;
+                //  if (card.orientation == Gtk.Orientation.HORIZONTAL) {
+                //      card.orientation = Gtk.Orientation.VERTICAL;
+                //  } else {
+                //      card.orientation = Gtk.Orientation.HORIZONTAL;
+                //  }
+
+            });
 
             // Retrieve selected children
             this.selected_children_changed.connect (() => {
@@ -93,9 +102,9 @@ namespace App.Views {
                 var flow = (Gtk.FlowBoxChild) widget;
                 var book_card = (Widgets.BookCard) flow.get_child ();
                 if (flow.is_selected ()) {
-                    book_card.revealer.set_reveal_child (true);
+                    book_card.formats_revealer.set_reveal_child (true);
                 } else {
-                    book_card.revealer.set_reveal_child (false);
+                    book_card.formats_revealer.set_reveal_child (false);
                 }
             });
         }

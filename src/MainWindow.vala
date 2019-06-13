@@ -65,15 +65,52 @@ namespace App {
             set_titlebar (headerbar);
 
             /************************
+              Metadata Editor
+            ************************/
+            //  connect to some event...
+            var metadata_revealer = new Gtk.Revealer ();
+            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 8);
+            metadata_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
+            var but = new Gtk.Button.with_label ("Save Changes");
+            var meta_title = new Gtk.Label ("");
+            box.add (meta_title);
+            box.add (but);
+            metadata_revealer.add (box);
+
+
+            /************************
               Create Views
             ************************/
+            var view_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 8);
             var scroll_window = new Gtk.ScrolledWindow (null, null);
 
             stack = new Gtk.Stack ();
-            scroll_window.add (stack);
+
 
             library_view = new Views.LibraryView ();
             stack.add_named (library_view, "library");
+
+            view_box.add (metadata_revealer);
+            view_box.add (stack);
+
+            scroll_window.add (view_box);
+
+            double orig_value;
+
+            library_view.show_details.connect ((book) => {
+                meta_title.label = book.title;
+                //  Save original scroll position
+                orig_value = scroll_window.vadjustment.value;
+                //  Scroll to the top of the page
+                scroll_window.vadjustment.value = scroll_window.vadjustment.lower;
+                metadata_revealer.reveal_child = true;
+            });
+
+            but.clicked.connect (() => {
+                scroll_window.vadjustment.value = orig_value;
+                metadata_revealer.reveal_child = false;
+            });
+
 
             add (scroll_window);
         }

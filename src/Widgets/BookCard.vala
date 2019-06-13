@@ -32,7 +32,8 @@ namespace App.Widgets {
 
         public Models.Book book;
         public Granite.AsyncImage book_cover_image;
-        public Gtk.Revealer revealer;
+        public Gtk.Revealer formats_revealer;
+        public Gtk.Revealer settings_revealer;
 
         public BookCard(Models.Book book) {
             Object (
@@ -58,8 +59,8 @@ namespace App.Widgets {
             book_formats_box.halign = Gtk.Align.END;
             book_formats_box.valign = Gtk.Align.END;
 
-            revealer = new Gtk.Revealer ();
-            revealer.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
+            formats_revealer = new Gtk.Revealer ();
+            formats_revealer.transition_type = Gtk.RevealerTransitionType.CROSSFADE;
 
             var mobi_label = new Gtk.Label ("mobi");
             mobi_label.get_style_context ().add_class ("chip");
@@ -73,13 +74,13 @@ namespace App.Widgets {
             if (book.epub_path != null) book_formats_box.add (epub_label);
             if (book.mobi_path != null) book_formats_box.add (mobi_label);
 
-            revealer.add (book_formats_box);
+            formats_revealer.add (book_formats_box);
 
-            overlay.add_overlay (revealer);
+            overlay.add_overlay (formats_revealer);
             overlay.add (book_cover_image);
 
             /************************
-              Book Details
+              Book Details (Title/Author)
             ************************/
             var title_label = new Gtk.Label (book.title);
             title_label.tooltip_text = book.title;
@@ -93,9 +94,22 @@ namespace App.Widgets {
             author_label.max_width_chars = 15;
             author_label.ellipsize = Pango.EllipsizeMode.END;
 
+
+            /************************
+              Edit Metadata Revealer
+            ************************/
+            settings_revealer = new Gtk.Revealer ();
+            var large_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 10);
+            var test_label = new Gtk.Label ("test label");
+            large_box.add (test_label);
+            large_box.hexpand = true;
+
+            settings_revealer.add (large_box);
+
             add (overlay);
             add (title_label);
             add (author_label);
+            add (settings_revealer);
         }
     }
 }
