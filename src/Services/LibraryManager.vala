@@ -56,6 +56,7 @@ namespace App.Services {
          * @return Array of Model.Book objects
          */
         public async Models.Book[] get_library (string uri) {
+            reset_library ();
             yield load_library(uri);
             message ("library is " +  library.length.to_string ());
             return library;

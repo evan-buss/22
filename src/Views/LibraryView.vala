@@ -89,6 +89,15 @@ namespace App.Views {
         }
 
         /*
+         *  Remove and destroy all widgets from the FlowBox
+         */
+        public void clean_list () {
+            this.@foreach ( (widget) => {
+                widget.destroy();
+            });
+        }
+
+        /*
          * Retrieve all selected widgets from the flowbox
          */
         private void get_selected () {

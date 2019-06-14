@@ -60,6 +60,7 @@ namespace App {
             set_titlebar (headerbar);
 
             headerbar.library_changed.connect (() => {
+                library_view.clean_list ();
                 library_view.load_library ();
             });
 
@@ -70,7 +71,7 @@ namespace App {
             var top_revealer = new Gtk.Revealer ();
             top_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
 
-            var metadata_editor = new Widgets.MetadataEditor ();
+            var metadata_editor = new Widgets.MetadataEditor (this);
 
             top_revealer.add (metadata_editor);
 
@@ -97,6 +98,7 @@ namespace App {
 
             //  Activating a book card shows the metadata editor
             library_view.show_details.connect ((book) => {
+                metadata_editor.show_edit_controls (false);
                 metadata_editor.change_book (book);
                 //  Save original scroll position and scroll to top
                 orig_value = scroll_window.vadjustment.value;

@@ -28,6 +28,7 @@
         format overlay
 */
 namespace App.Widgets {
+
     class BookCard : Gtk.Box {
 
         public Models.Book book;
@@ -47,6 +48,7 @@ namespace App.Widgets {
               Create Image
             ************************/
             book_cover_image = new Granite.AsyncImage ();
+            book_cover_image.margin_top = 8;
             var image_file = File.new_for_path (this.book.image_path);
             book_cover_image.set_from_file_async (image_file, 200, 200, true);
 
