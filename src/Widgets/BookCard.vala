@@ -57,7 +57,7 @@ namespace App.Widgets {
             ************************/
             var overlay = new Gtk.Overlay ();
 
-            var book_formats_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+            var book_formats_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 4);
             book_formats_box.halign = Gtk.Align.END;
             book_formats_box.valign = Gtk.Align.END;
 

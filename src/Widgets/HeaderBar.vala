@@ -36,7 +36,7 @@ namespace App.Widgets {
                 title: "22"
             );
 
-            //  get_style_context ().add_class ("default-decoration");
+            get_style_context ().add_class ("default-decoration");
         }
 
         construct {
@@ -49,7 +49,7 @@ namespace App.Widgets {
             settings_button.has_tooltip = true;
             settings_button.tooltip_text = (_("Settings"));
             settings_button.set_image (new Gtk.Image.from_icon_name ("open-menu-symbolic",
-                Gtk.IconSize.LARGE_TOOLBAR));
+                Gtk.IconSize.SMALL_TOOLBAR));
 
 
             /************************

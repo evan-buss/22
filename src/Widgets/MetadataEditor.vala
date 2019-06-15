@@ -50,12 +50,12 @@ namespace App.Widgets {
         public Gtk.Button cancel_button;
         public Gtk.Button edit_button;
 
+        //  Content Switching Stack
         private Gtk.Stack stack;
+
         public signal void done_edit ();
 
         public Gtk.Window parent_window;
-
-
 
         public MetadataEditor(Gtk.Window parent_window) {
             Object  (
@@ -65,7 +65,9 @@ namespace App.Widgets {
             );
             this.parent_window = parent_window;
 
-            this.get_style_context ().add_class ("metadata-editor");
+            //  FIXME: elementary theme default buttons screwed up
+            //  Figure out how to use colorscheme's dark mode for specific widget
+            get_style_context ().add_class ("metadata-editor");
         }
 
         construct {
@@ -73,7 +75,7 @@ namespace App.Widgets {
               Details Widgets
             ************************/
             title = new Gtk.Label ("");
-            title.get_style_context ().add_class ("light-text");
+            //  title.get_style_context ().add_class ("light-text");
             title.get_style_context ().add_class ("book-title");
             title.halign = Gtk.Align.START;
             title.wrap = true;
@@ -82,7 +84,7 @@ namespace App.Widgets {
             title.set_hexpand (true);
 
             author = new Gtk.Label ("");
-            author.get_style_context ().add_class ("light-text");
+            //  author.get_style_context ().add_class ("light-text");
             author.halign = Gtk.Align.START;
 
             /************************
@@ -187,8 +189,8 @@ namespace App.Widgets {
             cancel_button.margin_top = 16;
 
             button_box.add (edit_button);
-            button_box.add (save_button);
             button_box.add (cancel_button);
+            button_box.add (save_button);
 
             /************************
               Layout
@@ -210,6 +212,9 @@ namespace App.Widgets {
             attach (button_box, 2, 0, 1, 6);
         }
 
+        /*
+         * Populate the metadata editor details with specific book propertiesi
+         */
         public void change_book (Models.Book book) {
             this.book = book;
 
@@ -218,23 +223,23 @@ namespace App.Widgets {
 
             image_file = File.new_for_path (book.image_path);
             image.set_from_file_async (image_file, 200, 200, true);
+
+            title_entry.text = book.title;
+            author_entry.text = book.author;
         }
 
+        /*
+         * Show or hide the metadata editing fields and buttons
+         */
         public void show_edit_controls (bool show) {
-               save_button.visible = show;
-               cancel_button.visible = show;
-               picture_button.visible = show;
+            save_button.visible = show;
+            picture_button.visible = show;
 
-               if (book != null) {
-                title_entry.text = book.title;
-                author_entry.text = book.author;
-               }
-
-               if (show) {
-                   stack.set_visible_child_name ("edit");
-               } else {
-                   stack.set_visible_child_name ("details");
-               }
+            if (show) {
+                stack.set_visible_child_name ("edit");
+            } else {
+                stack.set_visible_child_name ("details");
+            }
         }
     }
 }

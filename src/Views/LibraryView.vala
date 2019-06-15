@@ -35,7 +35,7 @@ namespace App.Views {
                 margin: 10,
                 selection_mode: Gtk.SelectionMode.MULTIPLE,
                 activate_on_single_click: false,
-                homogeneous: false,
+                homogeneous: true,
                 valign: Gtk.Align.START,
                 row_spacing: 10,
                 column_spacing: 10,
