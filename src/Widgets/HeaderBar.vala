@@ -30,7 +30,7 @@ namespace App.Widgets {
         public Gtk.Popover settings_popover;
         private Services.Settings settings;
 
-        public HeaderBar() {
+        public HeaderBar () {
             Object (
                 show_close_button: true,
                 title: "22"

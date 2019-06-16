@@ -79,7 +79,7 @@ namespace App {
               Create Views
             ************************/
             var scroll_window = new Gtk.ScrolledWindow (null, null);
-            var views_container = new Gtk.Box(Gtk.Orientation.VERTICAL, 8);
+            var views_container = new Gtk.Box (Gtk.Orientation.VERTICAL, 8);
             library_view = new Views.LibraryView ();
             stack = new Gtk.Stack ();
 

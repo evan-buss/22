@@ -36,7 +36,7 @@ namespace App.Widgets {
         public Gtk.Revealer formats_revealer;
         public Gtk.Revealer settings_revealer;
 
-        public BookCard(Models.Book book) {
+        public BookCard (Models.Book book) {
             Object (
                 orientation: Gtk.Orientation.VERTICAL,
                 spacing: 8

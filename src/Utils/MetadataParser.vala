@@ -24,7 +24,7 @@ namespace App.Utils {
 
     class MetadataParser {
 
-        public MetadataParser() {}
+        public MetadataParser () {}
 
         public static void parse_xml_file (ref Models.Book book) {
 

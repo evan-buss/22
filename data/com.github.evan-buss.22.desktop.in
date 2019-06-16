@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=Template App
-GenericName=Template
+Name=22
+GenericName=Book Manager
 Comment=
 Categories=Utility;Settings;
 Exec=com.github.evan-buss.22
 Icon=com.github.evan-buss.22
 Terminal=false
 Type=Application
-Keywords=app;template;vala;
+Keywords=22;book;manager;calibre
 X-GNOME-UsesNotifications=true

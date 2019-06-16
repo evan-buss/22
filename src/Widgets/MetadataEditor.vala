@@ -57,8 +57,8 @@ namespace App.Widgets {
 
         public Gtk.Window parent_window;
 
-        public MetadataEditor(Gtk.Window parent_window) {
-            Object  (
+        public MetadataEditor (Gtk.Window parent_window) {
+            Object (
                 row_spacing: 16,
                 column_spacing: 16,
                 margin_bottom: 8
@@ -96,7 +96,7 @@ namespace App.Widgets {
             try {
                 title_entry.set_icon_from_gicon (Gtk.EntryIconPosition.PRIMARY, Icon.new_for_string ("edit-symbolic"));
             } catch (Error e) {
-                message ("Could not create title entry icon...");
+                message ("Could not create title entry icon.");
             }
 
             author_entry = new Gtk.Entry ();

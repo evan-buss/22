@@ -47,10 +47,10 @@ namespace App.Views {
             settings = Services.Settings.get_default ();
             load_library ();
 
-            this.child_activated.connect((child)=>{
+            this.child_activated.connect ((child) => {
                 //  message ("showing revealer??");
-                var card = (Widgets.BookCard) child.get_child();
-                show_details(card.book);
+                var card = (Widgets.BookCard) child.get_child ();
+                show_details (card.book);
             });
 
             // Retrieve selected children
@@ -78,13 +78,13 @@ namespace App.Views {
                 return;
             }
 
-            library_manager.get_library.begin(uri, (obj, res) => {
-                var book_list = library_manager.get_library.end(res);
+            library_manager.get_library.begin (uri, (obj, res) => {
+                var book_list = library_manager.get_library.end (res);
                 message ("There were " + book_list.length.to_string () + " books");
                 foreach (var book in book_list) {
                     this.add (new Widgets.BookCard (book));
                 }
-                this.show_all();
+                this.show_all ();
             });
         }
 
@@ -93,7 +93,7 @@ namespace App.Views {
          */
         public void clean_list () {
             this.@foreach ( (widget) => {
-                widget.destroy();
+                widget.destroy ();
             });
         }
 

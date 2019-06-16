@@ -27,7 +27,7 @@ namespace App.Services {
         private static LibraryManager instance = null;
         private Models.Book[] library;
 
-        public LibraryManager() {
+        public LibraryManager () {
         }
 
         /*
@@ -49,7 +49,6 @@ namespace App.Services {
             library = null;
         }
 
-
         /*
          * Reload the library and return it
          *
@@ -57,8 +56,8 @@ namespace App.Services {
          */
         public async Models.Book[] get_library (string uri) {
             reset_library ();
-            yield load_library(uri);
-            message ("library is " +  library.length.to_string ());
+            yield load_library (uri);
+            message ("library is " + library.length.to_string ());
             return library;
         }
 
@@ -78,7 +77,7 @@ namespace App.Services {
             try {
 
                 //  Get an enumerator of all files in the directory
-                var e = yield dir.enumerate_children_async(
+                var e = yield dir.enumerate_children_async (
                     FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT, null);
 
 
@@ -102,7 +101,7 @@ namespace App.Services {
                         if (info.get_file_type () == FileType.DIRECTORY) {
                             found_folder = true;
                             var subdir_path = dir.resolve_relative_path (info.get_name ()).get_uri ();
-                            yield load_library(subdir_path);
+                            yield load_library (subdir_path);
                         }
                     }
 
@@ -112,7 +111,7 @@ namespace App.Services {
                         library += yield get_book_data (folder_path);
                     }
                 }
-            } catch(Error err) {
+            } catch (Error err) {
                 warning ("Error: %s\n", err.message);
             }
         }
@@ -121,38 +120,38 @@ namespace App.Services {
         /*
          * Create and return a new book object from a given book's folder path
          *
-         * @return new Book
+         * @return new Book with parsed data
          */
         private async Models.Book get_book_data (string path) {
-                var book = new Models.Book (path);
+            var book = new Models.Book (path);
 
-                var file = File.new_for_path (path);
+            var file = File.new_for_path (path);
 
-                file.enumerate_children_async.begin (FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT, null, (obj, res) => {
-                    try {
-                        FileEnumerator enumerator = file.enumerate_children_async.end (res);
-                        FileInfo info;
-                        while ((info = enumerator.next_file (null)) != null) {
-                            var name = info.get_name ();
-                            var item_path = file.resolve_relative_path (name).get_path ();
-                            if (name.contains (".jpg") || name.contains (".png") || name.contains (".jpeg")) {
-                                book.image_path = item_path;
-                            } else if (name.contains (".opf")) {
-                                book.metadata_path = item_path;
-                                Utils.MetadataParser.parse_xml_file (ref book);
-                            } else if (name.contains (".epub")) {
-                                book.epub_path = item_path;
-                            } else if (name.contains (".mobi")) {
-                                book.mobi_path = item_path;
-                            } else {
-                                book.unsupported = item_path;
-                            }
+            file.enumerate_children_async.begin (FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT, null, (obj, res) => {
+                try {
+                    FileEnumerator enumerator = file.enumerate_children_async.end (res);
+                    FileInfo info;
+                    while ((info = enumerator.next_file (null)) != null) {
+                        var name = info.get_name ();
+                        var item_path = file.resolve_relative_path (name).get_path ();
+                        if (name.contains (".jpg") || name.contains (".png") || name.contains (".jpeg")) {
+                            book.image_path = item_path;
+                        } else if (name.contains (".opf")) {
+                            book.metadata_path = item_path;
+                            Utils.MetadataParser.parse_xml_file (ref book);
+                        } else if (name.contains (".epub")) {
+                            book.epub_path = item_path;
+                        } else if (name.contains (".mobi")) {
+                            book.mobi_path = item_path;
+                        } else {
+                            book.unsupported = item_path;
                         }
-                    } catch (Error e) {
-                        print ("Error: %s\n", e.message);
                     }
-                });
-                return book;
+                } catch (Error e) {
+                    print ("Error: %s\n", e.message);
+                }
+            });
+            return book;
         }
     }
 }
