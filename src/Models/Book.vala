@@ -38,8 +38,21 @@ namespace App.Models {
         public string? image_path { get; set; }
         public string? epub_path { get; set; }
         public string? mobi_path { get; set; }
-        public string? metadata_path { get; set; }
+        private string? _metadata_path = null;
         public string? unsupported { get; set; }
+
+
+        //  Parse the metadata file when found
+        public string? metadata_path {
+            get {
+                return _metadata_path;
+            }
+            set {
+                _metadata_path = value;
+                title = Utils.MetadataParser.get_tag_content (metadata_path, "title");
+                author = Utils.MetadataParser.get_tag_content (metadata_path, "creator");
+            }
+        }
 
         public Book (string folder_path) {
             this.folder_path = folder_path;

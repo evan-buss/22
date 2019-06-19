@@ -108,6 +108,7 @@ namespace App.Widgets {
               Change Book Image Button
             ************************/
             //  Create Camera Button Icon
+            //  TODO: Figure out what icon to use...
             picture_button = new Gtk.Button.from_icon_name ("emblem-photos", Gtk.IconSize.DIALOG);
             picture_button.get_style_context ().add_class ("image-select-button");
             picture_button.halign = Gtk.Align.CENTER;
