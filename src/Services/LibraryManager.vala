@@ -56,9 +56,13 @@ namespace App.Services {
          */
         public async Models.Book[] get_library (string uri) {
             reset_library ();
+            message ("library manager: before load library");
             yield load_library (uri);
+            message ("library manager: library returned");
             message (library.length.to_string ());
+            message ("library manager: before prune library");
             prune_library ();
+            message ("library manager: after prune library");
             return library;
         }
 

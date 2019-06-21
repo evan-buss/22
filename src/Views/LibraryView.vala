@@ -62,6 +62,12 @@ namespace App.Views {
                 get_selected ();
             });
 
+            //  Handle book searches
+            headerbar.search_entry.search_changed.connect (() => {
+                //  message (headerbar.search_entry.get_text ());
+                this.set_filter_func (filter_func);
+            });
+
             //  key_press_event.connect ((e) => {
             //      if ((e.state & Gdk.ModifierType.CONTROL_MASK) != 0) {
             //          if (e.keyval == Gdk.Key.d) {
@@ -82,16 +88,35 @@ namespace App.Views {
                 return;
             }
 
+            headerbar.show_spinner ();
+            message ("before loading books func called");
             library_manager.get_library.begin (uri, (obj, res) => {
+                message ("waiting for books to load");
                 var book_list = library_manager.get_library.end (res);
-                message ("updating headerbar");
+                message ("books loaded");
                 headerbar.update_book_count (book_list.length);
+                message ("about to add book cards to teh view");
                 foreach (var book in book_list) {
-                    // message (book.title);
                     this.add (new Widgets.BookCard (book));
                 }
+                message ("done adding book cards to the view");
+                headerbar.hide_spinner ();
                 this.show_all ();
             });
+        }
+
+        /*
+         * Filter the books by title and author
+         */
+        public bool filter_func (Gtk.FlowBoxChild book) {
+            var bookcard = (Widgets.BookCard) book.get_child ();
+            var text = headerbar.search_entry.get_text ();
+            
+            if (bookcard.book.title.down ().contains (text.down ()) 
+                || bookcard.book.author.down ().contains (text.down ())) {
+                return true;
+            }
+            return false;
         }
 
         /*

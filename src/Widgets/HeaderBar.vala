@@ -26,11 +26,15 @@ namespace App.Widgets {
     public class HeaderBar : Gtk.HeaderBar {
 
         public signal void open_settings ();
+
+        public Gtk.Spinner spinner;
         public Gtk.Button settings_button;
         public Gtk.Popover settings_popover;
-        private Services.Settings settings;
         public Gtk.Label book_count;
-
+        public Gtk.SearchEntry search_entry;
+        
+        private Services.Settings settings;
+        
         public HeaderBar () {
             Object (
                 show_close_button: true,
@@ -43,9 +47,11 @@ namespace App.Widgets {
         construct {
 
             settings = Services.Settings.get_default ();
+
             /************************
               Settings Button
             ************************/
+
             settings_button = new Gtk.Button ();
             settings_button.has_tooltip = true;
             settings_button.tooltip_text = (_("Settings"));
@@ -56,48 +62,38 @@ namespace App.Widgets {
                 open_settings ();
             });
 
-            book_count = new Gtk.Label ("");
+            /************************
+              Search Entry
+            ************************/
+            search_entry = new Gtk.SearchEntry ();
 
             /************************
-              Settings Menu Popover
+              Left Side 
             ************************/
-            // var settings_menu = new Gtk.Grid ();
-            // settings_menu.row_spacing = 8;
-            // var library_location_selector =
-            //     new Gtk.FileChooserButton ("Select Book Library", Gtk.FileChooserAction.SELECT_FOLDER);
-            // library_location_selector.margin_start = 4;
-            // library_location_selector.margin_end = 4;
 
-            // // Load file from preferences or set to default
-            // if (settings.library_path == "") {
-            //     library_location_selector.set_current_folder_uri ("~/Documents");
-            // } else {
-            //     library_location_selector.set_uri (settings.library_path);
-            // }
+            book_count = new Gtk.Label ("");
+            spinner = new Gtk.Spinner ();
 
-            // // Save users's file selection choice.
-            // library_location_selector.file_set.connect (() => {
-            //     settings.library_path = library_location_selector.get_uri ();
-            //     library_changed ();
-            // });
-
-
-            // settings_menu.attach (new Gtk.Label ("Select Book Library"), 0, 0, 1, 1);
-            // settings_menu.attach (library_location_selector, 0, 1, 1, 1);
-            // settings_menu.show_all ();
-
-
-            // settings_popover = new Gtk.Popover (null);
-            // settings_popover.add (settings_menu);
-            // settings_button.popover = settings_popover;
-
+            
+            pack_start (spinner);
             pack_start (book_count);
             pack_end (settings_button);
+            pack_end (search_entry);
         }
 
         public void update_book_count (int count) {
             message ("inside function");
             book_count.label = count.to_string () + " books";
+        }
+
+        public void show_spinner () {
+            spinner.active = true;
+            spinner.visible = true;
+        }
+
+        public void hide_spinner () {
+            spinner.active = false;
+            spinner.visible = false;
         }
     }
 }

@@ -138,6 +138,7 @@ namespace App.Widgets {
                 "Select", Gtk.ResponseType.ACCEPT);
 
             var filter = new Gtk.FileFilter ();
+            filter.set_filter_name ("Image Files");
             filter.add_pattern ("*.png");
             filter.add_pattern ("*.jpg");
             filter.add_pattern ("*.jpeg");

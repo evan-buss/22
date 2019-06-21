@@ -41,6 +41,7 @@ namespace App {
         }
 
         construct {
+
             /************************
               Load Existing Preferences
             ************************/
@@ -65,7 +66,7 @@ namespace App {
 
             headerbar.open_settings.connect (() => {
                 // headerbar.settings_button.active = true;
-                stack.set_visible_child_full ("greeting", Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+                stack.set_visible_child_name ("greeting");
             });
 
             /************************
@@ -87,6 +88,7 @@ namespace App {
 
             stack = new Gtk.Stack ();
             stack.set_homogeneous (false);
+            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
             
 
             library_view = new Views.LibraryView (headerbar);
@@ -103,24 +105,22 @@ namespace App {
                 if (settings.first_run) {
                     settings.first_run = false;
                 }
-                stack.set_visible_child_full ("library", Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+                stack.set_visible_child_name ("library");
             });
 
             views_container.add (top_revealer);
             views_container.add (stack);
             scroll_window.add (views_container);
 
-            stack.add_named (library_view, "library");
             stack.add_named (greeting_view, "greeting");
+            stack.add_named (library_view, "library");
 
-            if (settings.first_run) {
+            //  Switch to the library if the user has previously run the application
+            if (!settings.first_run) {
                 message ("first RUN");
-                stack.set_visible_child_name ("greeting");
-                greeting_view.show_all ();
-            } /*else {
-                message ("library");
                 stack.set_visible_child_name ("library");
-            }*/
+                library_view.show_all ();
+            } 
 
             /************************
               Event Handling
