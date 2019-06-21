@@ -30,7 +30,9 @@ namespace App.Views {
         private Services.Settings settings;
         public signal void show_details (Models.Book book);
 
-        public LibraryView () {
+        private Widgets.HeaderBar headerbar;
+
+        public LibraryView (Widgets.HeaderBar headerbar) {
             Object (
                 margin: 10,
                 selection_mode: Gtk.SelectionMode.MULTIPLE,
@@ -41,6 +43,8 @@ namespace App.Views {
                 column_spacing: 10,
                 orientation: Gtk.Orientation.HORIZONTAL
             );
+
+            this.headerbar = headerbar;
 
             //  Load library on application start
             library_manager = LibraryManager.get_instance ();
@@ -69,8 +73,8 @@ namespace App.Views {
             //  });
         }
 
-
         //  Load library from the current gsettings saved path
+        // Returns: Number of books loaded
         public void load_library () {
             string uri = settings.library_path;
 
@@ -80,8 +84,10 @@ namespace App.Views {
 
             library_manager.get_library.begin (uri, (obj, res) => {
                 var book_list = library_manager.get_library.end (res);
-                message ("There were " + book_list.length.to_string () + " books");
+                message ("updating headerbar");
+                headerbar.update_book_count (book_list.length);
                 foreach (var book in book_list) {
+                    // message (book.title);
                     this.add (new Widgets.BookCard (book));
                 }
                 this.show_all ();

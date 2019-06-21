@@ -57,8 +57,24 @@ namespace App.Services {
         public async Models.Book[] get_library (string uri) {
             reset_library ();
             yield load_library (uri);
-            message ("library is " + library.length.to_string ());
+            message (library.length.to_string ());
+            prune_library ();
             return library;
+        }
+
+        /* 
+         * Removes all invalid books from the library.
+         */
+        public void prune_library () {
+            message ("starting prune");
+            Models.Book[] temp = null;
+            foreach (var book in library) {
+                if (book.is_valid ()) {
+                    temp += book;
+                }
+            }
+            message ("done looping");
+            library = temp;
         }
 
         /*
@@ -75,7 +91,6 @@ namespace App.Services {
             var dir = File.new_for_uri (uri);
 
             try {
-
                 //  Get an enumerator of all files in the directory
                 var e = yield dir.enumerate_children_async (
                     FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT, null);
@@ -109,6 +124,8 @@ namespace App.Services {
                     if (!found_folder) {
                         var folder_path = File.new_for_path (path).get_parent ().get_path ();
                         library += yield get_book_data (folder_path);
+                        // var book = yield get_book_data (folder_path);
+                        // if (book != null) library += book;
                     }
                 }
             } catch (Error err) {
@@ -122,10 +139,14 @@ namespace App.Services {
          *
          * @return new Book with parsed data
          */
-        private async Models.Book get_book_data (string path) {
+        private async Models.Book? get_book_data (string path) {
             var book = new Models.Book (path);
 
             var file = File.new_for_path (path);
+
+            // Use Glib mainloop to prevent return until async completes (HACKY)
+            // https://mail.gnome.org/archives/vala-list/2016-January/msg00021.html
+            // var loop = new MainLoop ();
 
             file.enumerate_children_async.begin (FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT, null, (obj, res) => {
                 try {
@@ -142,14 +163,20 @@ namespace App.Services {
                             book.epub_path = item_path;
                         } else if (name.contains (".mobi")) {
                             book.mobi_path = item_path;
+                        } else if (name.contains (".azw3")) {
+                            book.azw_path = item_path;
                         } else {
                             book.unsupported = item_path;
                         }
                     }
+                    // loop.quit();
                 } catch (Error e) {
                     print ("Error: %s\n", e.message);
                 }
             });
+
+            // loop.run ();
+            // return book.is_valid () ? book : null;
             return book;
         }
     }

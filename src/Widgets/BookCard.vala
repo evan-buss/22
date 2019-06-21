@@ -70,11 +70,16 @@ namespace App.Widgets {
 
             var epub_label = new Gtk.Label ("epub");
             epub_label.get_style_context ().add_class ("chip");
-            epub_label.get_style_context ().add_class ("chip__blue");
+            epub_label.get_style_context ().add_class ("chip__blue");            
+
+            var azw_label = new Gtk.Label ("azw3");
+            azw_label.get_style_context ().add_class ("chip");
+            azw_label.get_style_context ().add_class ("chip__blue");
 
             //  Only show chips for book formats in library
             if (book.epub_path != null) book_formats_box.add (epub_label);
             if (book.mobi_path != null) book_formats_box.add (mobi_label);
+            if (book.azw_path != null) book_formats_box.add (azw_label);
 
             formats_revealer.add (book_formats_box);
 

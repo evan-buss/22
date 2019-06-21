@@ -38,6 +38,7 @@ namespace App.Models {
         public string? image_path { get; set; }
         public string? epub_path { get; set; }
         public string? mobi_path { get; set; }
+        public string? azw_path { get; set; }
         private string? _metadata_path = null;
         public string? unsupported { get; set; }
 
@@ -58,6 +59,14 @@ namespace App.Models {
             this.folder_path = folder_path;
         }
 
+        /**
+         *  Determine if the book is valid.
+         *  A valid book has atleast a single ebook format
+         */
+        public bool is_valid () {
+            return epub_path != null || mobi_path != null || azw_path != null;
+        }
+
         public string to_string () {
             return @"Folder: $folder_path\n" +
                 @"Image: $image_path\n" +
@@ -66,6 +75,4 @@ namespace App.Models {
                 @"metadata: $metadata_path\n";
         }
     }
-
-
 }

@@ -20,23 +20,19 @@
 * Authored by: Evan Buss <evan.buss28@gmail.com>
 */
 
-namespace App.Services {
+/**
+ * Class that holds constant variables for 22
+ */
+public class Constants {
 
-    class Settings : Granite.Services.Settings {
+	public static string[] supported_formats = {"epub", "mobi", "azw3"};
 
-        private static GLib.Once<Settings> instance;
-        public static unowned Settings get_default () {
-            return instance.once (() => { return new Settings (); });
-        }
+	/**
+	 * Constructor (NOT USED)
+	 */
+	public Constants() {
+		
+	}
 
-        public string library_path { get; set; }
-
-        public string converter { get; set; }
-
-        public bool first_run { get; set; }
-
-        public Settings () {
-            base ("com.github.evan-buss.22");
-        }
-    }
+	
 }

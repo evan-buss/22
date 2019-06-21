@@ -63,9 +63,9 @@ namespace App {
             var headerbar = new Widgets.HeaderBar ();
             set_titlebar (headerbar);
 
-            headerbar.library_changed.connect (() => {
-                library_view.clean_list ();
-                library_view.load_library ();
+            headerbar.open_settings.connect (() => {
+                // headerbar.settings_button.active = true;
+                stack.set_visible_child_full ("greeting", Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             });
 
             /************************
@@ -87,10 +87,10 @@ namespace App {
 
             stack = new Gtk.Stack ();
             stack.set_homogeneous (false);
+            
 
-            greeting_view = new Views.GreetingView (stack);
-            stack.add_named (greeting_view, "greeting");
-
+            library_view = new Views.LibraryView (headerbar);
+            greeting_view = new Views.GreetingView ();
 
             //  Load library when user selects a location
             greeting_view.library_changed.connect (() => {
@@ -98,19 +98,29 @@ namespace App {
                 library_view.load_library ();
             });
 
-            library_view = new Views.LibraryView ();
-            stack.add_named (library_view, "library");
-
-            if (settings.first_run) {
-                stack.set_visible_child_name ("greeting");
-            } else {
-                stack.set_visible_child_name ("library");
-            }
+            // Switch to library view when button pressed
+            greeting_view.done.connect (() => {
+                if (settings.first_run) {
+                    settings.first_run = false;
+                }
+                stack.set_visible_child_full ("library", Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+            });
 
             views_container.add (top_revealer);
             views_container.add (stack);
-
             scroll_window.add (views_container);
+
+            stack.add_named (library_view, "library");
+            stack.add_named (greeting_view, "greeting");
+
+            if (settings.first_run) {
+                message ("first RUN");
+                stack.set_visible_child_name ("greeting");
+                greeting_view.show_all ();
+            } /*else {
+                message ("library");
+                stack.set_visible_child_name ("library");
+            }*/
 
             /************************
               Event Handling

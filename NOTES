@@ -1,0 +1,7 @@
+Policykit
+  - Necessary for installing the kindlegen binary to the /usr/bin directory on demand
+  - Necessary for mounting e-readers and copying files
+
+Need a *.policykit file to be installed to /usr/share/polkit-1/actions on program install (meson)
+
+Some sort of bottleneck in the GreetingView. Withoutit the library loads lag-free, but with it, any change to the library makes the top left library count load late and freezes the entire window.

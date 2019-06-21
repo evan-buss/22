@@ -37,16 +37,16 @@ namespace App.Views {
     public class GreetingView : Gtk.Grid {
 
         private Services.Settings settings;
-        private Gtk.Stack view_stack;
 
         public signal void library_changed ();
+        public signal void done ();
 
-        public GreetingView(Gtk.Stack view_stack) {
+        public GreetingView() {
             Object (
                 halign: Gtk.Align.CENTER,
-                valign: Gtk.Align.CENTER
+                valign: Gtk.Align.CENTER,
+                vexpand: true
             );
-            this.view_stack = view_stack;
         }
 
         construct  {
@@ -68,6 +68,8 @@ namespace App.Views {
 
             var library_label = new Gtk.Label ("First, select your library folder or create a new one");
             library_label.get_style_context ().add_class ("book-title");
+            library_label.halign = Gtk.Align.START;
+            library_label.margin_start = 60;
             library_label.margin_bottom = 8;
 
             var library_location_selector =
@@ -108,6 +110,8 @@ namespace App.Views {
             }
             var convert_label = new Gtk.Label ("Next, select a backend for book conversions.");
             convert_label.get_style_context ().add_class ("book-title");
+            convert_label.margin_start = 60;
+            convert_label.halign = Gtk.Align.START;
             convert_label.margin_top = 16;
 
             /************************
@@ -162,8 +166,7 @@ namespace App.Views {
             done_button.margin = 32;
 
             done_button.clicked.connect (() => {
-                message ("setting library view...");
-                view_stack.set_visible_child_name ("library");
+                done ();
             });
 
             attach (heading, 0, 0, 1, 1);
@@ -178,9 +181,9 @@ namespace App.Views {
         private void handle_converter_select (Gtk.ToggleButton radio) {
             if (radio.get_active ()) {
                 if (radio.label == "Amazon's KindleGen") {
-                    message ("kindlegen");
+                    settings.converter = "kindlegen";
                 } else {
-                    message ("calibre");
+                    settings.converter = "ebook-convert";
                 }
             }
         }
