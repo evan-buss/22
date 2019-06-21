@@ -31,6 +31,8 @@ namespace App.Services {
 
         public string library_path { get; set; }
 
+        public bool first_run { get; set; }
+
         public Settings () {
             base ("com.github.evan-buss.22");
         }

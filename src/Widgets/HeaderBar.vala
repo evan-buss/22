@@ -56,6 +56,7 @@ namespace App.Widgets {
               Settings Menu Popover
             ************************/
             var settings_menu = new Gtk.Grid ();
+            settings_menu.row_spacing = 8;
             var library_location_selector =
                 new Gtk.FileChooserButton ("Select Book Library", Gtk.FileChooserAction.SELECT_FOLDER);
             library_location_selector.margin_start = 4;

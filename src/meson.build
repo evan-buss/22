@@ -6,6 +6,7 @@ sources = files (
   'Models/Book.vala',
 
   'Views/LibraryView.vala',
+  'Views/GreetingView.vala',
 
   'Widgets/HeaderBar.vala',
   'Widgets/BookCard.vala',

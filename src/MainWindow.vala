@@ -24,8 +24,12 @@ namespace App {
 
     public class MainWindow : Gtk.ApplicationWindow {
 
-        public Views.LibraryView library_view;
+        //  Views and Stack
         private Gtk.Stack stack;
+        public Views.LibraryView library_view;
+        public Views.GreetingView greeting_view;
+
+        private Services.Settings settings;
 
         public MainWindow (Application app) {
             Object (
@@ -40,7 +44,7 @@ namespace App {
             /************************
               Load Existing Preferences
             ************************/
-            //  settings = Services.Settings.get_default ();
+            settings = Services.Settings.get_default ();
 
             /************************
               Load External CSS
@@ -80,10 +84,28 @@ namespace App {
             ************************/
             var scroll_window = new Gtk.ScrolledWindow (null, null);
             var views_container = new Gtk.Box (Gtk.Orientation.VERTICAL, 8);
-            library_view = new Views.LibraryView ();
-            stack = new Gtk.Stack ();
 
+            stack = new Gtk.Stack ();
+            stack.set_homogeneous (false);
+
+            greeting_view = new Views.GreetingView (stack);
+            stack.add_named (greeting_view, "greeting");
+
+
+            //  Load library when user selects a location
+            greeting_view.library_changed.connect (() => {
+                library_view.clean_list ();
+                library_view.load_library ();
+            });
+
+            library_view = new Views.LibraryView ();
             stack.add_named (library_view, "library");
+
+            if (settings.first_run) {
+                stack.set_visible_child_name ("greeting");
+            } else {
+                stack.set_visible_child_name ("library");
+            }
 
             views_container.add (top_revealer);
             views_container.add (stack);
@@ -105,7 +127,6 @@ namespace App {
                 scroll_window.vadjustment.value = scroll_window.vadjustment.lower;
                 top_revealer.reveal_child = true;
             });
-
 
             //  Scroll back to orig position when done
             metadata_editor.done_edit.connect (() => {

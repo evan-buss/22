@@ -27,6 +27,10 @@
 @define-color red #ff5858;
 @define-color pink #db36a4;
 
+/************************
+  Library View Styles
+************************/
+
 .chip {
     border-radius: 100px;
     padding: 4px;
@@ -66,4 +70,16 @@
     /* background: #5433FF; */
     background: linear-gradient(to right, #A5FECB, #20BDFF, #5433FF);
 
+}
+
+/************************
+  Greetings View Styles
+************************/
+
+.heading {
+    font-weight: bold;
+}
+
+.greeting-title {
+    font-size: 3em;
 }
