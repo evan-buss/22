@@ -33,3 +33,14 @@ Bugs:
         I am not sure what is causing this... I have written debug statements everywhere but 
         they all run quickly and then the freeze comes. It's like the GTK is freezing trying to
         load..
+
+
+
+PRIORITY
+
+  Change Book Covers
+  Convert Book To Different Formats
+    - Not sure how the exterior image and metadata.opf are translated to the internal metadata and cover image inside the .epub (*zip*)
+      - Calibre has command line utilities to edit the ebook data...
+      - Not sure what this means for the 
+    - Not sure if calibre has a utility that takes the exterior and converts it?
