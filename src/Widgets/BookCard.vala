@@ -29,12 +29,14 @@
 */
 namespace App.Widgets {
 
-    class BookCard : Gtk.Box {
+    public class BookCard : Gtk.Box {
 
         public Models.Book book;
         public Granite.AsyncImage book_cover_image;
         public Gtk.Revealer formats_revealer;
         public Gtk.Revealer settings_revealer;
+        public Gtk.Label title_label;
+        public Gtk.Label author_label;
 
         public BookCard (Models.Book book) {
             Object (
@@ -89,13 +91,13 @@ namespace App.Widgets {
             /************************
               Book Details (Title/Author)
             ************************/
-            var title_label = new Gtk.Label (book.title);
+            title_label = new Gtk.Label (book.title);
             title_label.tooltip_text = book.title;
             title_label.halign = Gtk.Align.CENTER;
             title_label.max_width_chars = 15;
             title_label.ellipsize = Pango.EllipsizeMode.END;
 
-            var author_label = new Gtk.Label (book.author);
+            author_label = new Gtk.Label (book.author);
             author_label.tooltip_text = book.author;
             author_label.halign = Gtk.Align.CENTER;
             author_label.max_width_chars = 15;
@@ -117,6 +119,17 @@ namespace App.Widgets {
             add (title_label);
             add (author_label);
             add (settings_revealer);
+        }
+
+        //  Updates the card view to reflect changes to the underlying BOOK
+        public void data_changed () {
+          book.save_changes_to_disk ();
+
+          title_label.label = book.title;
+          author_label.label = book.author;
+
+          var image_file = File.new_for_path (this.book.image_path);
+          book_cover_image.set_from_file_async (image_file, 200, 200, true);
         }
     }
 }

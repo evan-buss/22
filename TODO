@@ -3,13 +3,13 @@
 Design:
     ☐ Headerbar should have a button that toggles between different views
         ☐ Library View
-            ☐ Grid View
+            ✔ Grid View @done(19-06-21 21:58)
             ☐ List View
             ☐ Sort / Order Library
-            ☐ Search Library
+            ✔ Search Library @done(19-06-21 21:58)
             ☐ (maybe) bulk actions w/ multiselect
         ☐ Device management view
-    ☐ Library should be searchable
+    ✔ Library should be searchable @done(19-06-21 21:58)
     ☐ Non-icon view that groups books by author
 
 Next Steps:
@@ -25,5 +25,11 @@ Next Steps:
         ☐ (maybe) Internet metadata parser
     ☐ First login landing page
         ☐ Prompt to download conversion binary (Amazon)
-        ☐ Prompt to choose a library location (folder)
+        ✔ Prompt to choose a library location (folder) @done(19-06-21 21:58)
         ☐ Loading indicator on first parse
+
+Bugs:
+    ☐ On initial load the UI freezes for a small period of time, easily scene with the loading indicator
+        I am not sure what is causing this... I have written debug statements everywhere but 
+        they all run quickly and then the freeze comes. It's like the GTK is freezing trying to
+        load..

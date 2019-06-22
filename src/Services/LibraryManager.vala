@@ -27,8 +27,7 @@ namespace App.Services {
         private static LibraryManager instance = null;
         private Models.Book[] library;
 
-        public LibraryManager () {
-        }
+        public LibraryManager () {}
 
         /*
          * Get the current instance of the library object (singleton)
@@ -56,13 +55,8 @@ namespace App.Services {
          */
         public async Models.Book[] get_library (string uri) {
             reset_library ();
-            message ("library manager: before load library");
             yield load_library (uri);
-            message ("library manager: library returned");
-            message (library.length.to_string ());
-            message ("library manager: before prune library");
             prune_library ();
-            message ("library manager: after prune library");
             return library;
         }
 
@@ -70,14 +64,12 @@ namespace App.Services {
          * Removes all invalid books from the library.
          */
         public void prune_library () {
-            message ("starting prune");
             Models.Book[] temp = null;
             foreach (var book in library) {
                 if (book.is_valid ()) {
                     temp += book;
                 }
             }
-            message ("done looping");
             library = temp;
         }
 
@@ -92,6 +84,7 @@ namespace App.Services {
         */
         //  FIXME: Change to path
         private async void load_library (string uri) {
+
             var dir = File.new_for_uri (uri);
 
             try {

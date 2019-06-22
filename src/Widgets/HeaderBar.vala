@@ -82,7 +82,6 @@ namespace App.Widgets {
         }
 
         public void update_book_count (int count) {
-            message ("inside function");
             book_count.label = count.to_string () + " books";
         }
 

@@ -28,7 +28,7 @@ namespace App.Views {
 
         private LibraryManager library_manager;
         private Services.Settings settings;
-        public signal void show_details (Models.Book book);
+        public signal void show_details (ref Widgets.BookCard card);
 
         private Widgets.HeaderBar headerbar;
 
@@ -51,10 +51,16 @@ namespace App.Views {
             settings = Services.Settings.get_default ();
             load_library ();
 
+
+            /************************
+              Event Handling
+            ************************/
+
+            //  Double clicking a book shows its details
             this.child_activated.connect ((child) => {
                 //  message ("showing revealer??");
                 var card = (Widgets.BookCard) child.get_child ();
-                show_details (card.book);
+                show_details (ref card);
             });
 
             // Retrieve selected children
@@ -79,7 +85,7 @@ namespace App.Views {
             //  });
         }
 
-        //  Load library from the current gsettings saved path
+        // Load library from the current gsettings saved path
         // Returns: Number of books loaded
         public void load_library () {
             string uri = settings.library_path;
@@ -89,17 +95,12 @@ namespace App.Views {
             }
 
             headerbar.show_spinner ();
-            message ("before loading books func called");
             library_manager.get_library.begin (uri, (obj, res) => {
-                message ("waiting for books to load");
                 var book_list = library_manager.get_library.end (res);
-                message ("books loaded");
                 headerbar.update_book_count (book_list.length);
-                message ("about to add book cards to teh view");
                 foreach (var book in book_list) {
                     this.add (new Widgets.BookCard (book));
                 }
-                message ("done adding book cards to the view");
                 headerbar.hide_spinner ();
                 this.show_all ();
             });

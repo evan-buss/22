@@ -61,6 +61,7 @@ namespace App {
             /************************
                 Header Bar
             ************************/
+            
             var headerbar = new Widgets.HeaderBar ();
             set_titlebar (headerbar);
 
@@ -90,7 +91,6 @@ namespace App {
             stack.set_homogeneous (false);
             stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
             
-
             library_view = new Views.LibraryView (headerbar);
             greeting_view = new Views.GreetingView ();
 
@@ -117,7 +117,6 @@ namespace App {
 
             //  Switch to the library if the user has previously run the application
             if (!settings.first_run) {
-                message ("first RUN");
                 stack.set_visible_child_name ("library");
                 library_view.show_all ();
             } 
@@ -129,9 +128,9 @@ namespace App {
             double orig_value;
 
             //  Activating a book card shows the metadata editor
-            library_view.show_details.connect ((book) => {
+            library_view.show_details.connect ((ref card) => {
                 metadata_editor.show_edit_controls (false);
-                metadata_editor.change_book (book);
+                metadata_editor.change_book (ref card);
                 //  Save original scroll position and scroll to top
                 orig_value = scroll_window.vadjustment.value;
                 scroll_window.vadjustment.value = scroll_window.vadjustment.lower;

@@ -50,8 +50,8 @@ namespace App.Models {
             }
             set {
                 _metadata_path = value;
-                title = Utils.MetadataParser.get_tag_content (metadata_path, "title");
-                author = Utils.MetadataParser.get_tag_content (metadata_path, "creator");
+                title = Utils.MetadataParser.get_tag_content (metadata_path, Utils.MetadataTag.TITLE);
+                author = Utils.MetadataParser.get_tag_content (metadata_path, Utils.MetadataTag.AUTHOR);
             }
         }
 
@@ -73,6 +73,11 @@ namespace App.Models {
                 @"ePub: $epub_path \n" +
                 @"mobi: $mobi_path\n" +
                 @"metadata: $metadata_path\n";
+        }
+
+        public void save_changes_to_disk () {
+            Utils.MetadataParser.set_tag_content (this.metadata_path, Utils.MetadataTag.TITLE, this.title);
+            Utils.MetadataParser.set_tag_content (this.metadata_path, Utils.MetadataTag.AUTHOR, this.author);
         }
     }
 }

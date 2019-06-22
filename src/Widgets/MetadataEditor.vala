@@ -27,6 +27,7 @@
  *  - Cover Image
  *  - ISBN (?)
  *  - Book Blurb (?)
+ *  - Tags (?)
  */
 
 namespace App.Widgets {
@@ -37,6 +38,7 @@ namespace App.Widgets {
         private Gtk.Label title;
         private Gtk.Label author;
         private Models.Book book;
+        private Widgets.BookCard card;
         private File image_file;
         private Granite.AsyncImage image;
 
@@ -181,6 +183,7 @@ namespace App.Widgets {
             save_button.margin_top = 16;
 
             save_button.clicked.connect (() => {
+                save_metadata();
                 done_edit ();
             });
 
@@ -214,11 +217,18 @@ namespace App.Widgets {
             attach (button_box, 2, 0, 1, 6);
         }
 
+        public void save_metadata () {
+            book.title = title_entry.get_text ();
+            book.author = author_entry.get_text ();
+            card.data_changed ();
+        }
+
         /*
          * Populate the metadata editor details with specific book propertiesi
          */
-        public void change_book (Models.Book book) {
-            this.book = book;
+        public void change_book (ref Widgets.BookCard card) {
+            this.book = card.book;
+            this.card = card;
 
             title.label = book.title;
             author.label = book.author;
