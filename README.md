@@ -10,7 +10,9 @@ The most difficult aspect of the project is in regards to conversion and metadat
 
 I have also stopped using Elementary OS and I no longer wished to publish it only to the AppCenter. I currently use Manjaro XFCE with i3-gaps and I don't want to fiddle around making it look good on Elementary. The reasons for my switch include outdated software in the repositories, various bugs with the operating system that I have little hope will ever be fixed, and other small things.
 
-Lastly, through the course of development I have learned what a tremendous application Calibre is. It is able to handle any format you throw at it and is a one-stop-shop for all ebook needs. I have been using it for years and if my only complaint is that it has a bunch of functionality that I don't use, then I am willing to keep using it. To develop a minimal version would require a rewrite of all of the existing and well-tested ebook conversion and editing code that already works perfectly with Calibre.
+Lastly, trying to maintain compatibility with Calibre proved near impossible. There is not much documentation about how Calibre formats it's libraries and what all the different fields in the metadata files it creates are used for. The only way would be to wrap Calibre's existing command line utilities, but that sort of defeats the purpose of the application. 
+
+Through the course of development I have learned what a tremendous application Calibre is. It is able to handle any format you throw at it and is a one-stop-shop for all ebook needs. I have been using it for years and if my only complaint is that it has a bunch of functionality that I don't use, then I am willing to keep using it. To develop a minimal version would require a rewrite of all of the existing and well-tested ebook conversion and editing code that already works perfectly with Calibre.
 
 I learned a lot and had some fun attempting to develop such an application. I will always develop applications that I find personally useful and if something changes in the future, I am not against trying again.
 
